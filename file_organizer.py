@@ -38,12 +38,15 @@ def Organizer(path, userSelection):
 
 if __name__ == "__main__":
 
+    # this is a default set of common extensions. you can add whatever you want in there.
     extenstionSet = {
         ".docx": "Documents",
         ".xslx": "Documents",
         ".pdf": "Documents",
         ".csv": "Documents",
         ".xlsx": "Documents",
+        ".zip": "Compressed",
+        ".rar": "Compressed",
         ".mp3": "Musics",
         ".m4a": "Musics",
         ".ogg": "Musics",
@@ -59,6 +62,13 @@ if __name__ == "__main__":
     }
 
     path = input('''\tPaste the path you want to organize 
+        >>> ''')
+
+    while not os.path.exists(path):
+        print('''\n\tThe path you entered doesn\'t exist. Make sure there aren\'t spelling errors
+        and enter the correct path. ''')
+
+        path = input('''\n\tPaste the path you want to organize 
         >>> ''')
 
     userSelection = {}
@@ -81,7 +91,7 @@ if __name__ == "__main__":
                 '''\n\tEnter the extension you want to organize preceeded by a period. For-example:- '.py' 
                 >>> ''')
 
-            folderName = input('''\n\tEnter a folder name for the chosen extension 
+            folderName = input('''\n\tEnter a folder name of your choice for the selected extension 
             >>> ''')
 
             userSelection[ext] = folderName
@@ -91,7 +101,7 @@ if __name__ == "__main__":
             For-example:- '.py .json .csv' 
             >>> ''')
 
-            folderName = input('''\n\tEnter a folder name for the chosen extensions 
+            folderName = input('''\n\tEnter a folder name of your choice for the selected extensions 
             >>> ''')
 
             for i in ext.split():
