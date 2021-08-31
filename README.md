@@ -1,4 +1,4 @@
-Automated file organizer
+# Automated file organizer
 
 If you have that messed up folder structure with tons of different files all jumbled together, this is just the right script you need.
 It will sort the same file types into same folders. It has three options:-
@@ -11,15 +11,15 @@ Usage:
 
 its really simple.
 
-1). Run the code
-2). Enter the path you want to organize
-3). Choose the file extenstions you want to organize(i.e. ".exe", ".py", ".mp4", ".mp3"...)
-4). Enter folder name
-5). There is no step 5. Enjoy your Organized folder and try not to make a mess for the future
+    1). Run the code.
+    2). Enter the path you want to organize.
+    3). Choose the file extenstions you want to organize(i.e. ".exe", ".py", ".mp4", ".mp3"...).
+    4). Enter folder name.
+    5). There is no step 5. Enjoy your Organized folder and try not to make a mess for the future.
 
-Possible Improvements
+Possible Improvements:
 
-It can be further improved to organize files with certain keyword in their filename. Even select only specific files not just using extensions.
+> It can be further improved to organize files with certain keyword in their filename. Even select only specific files not just using extensions.
 What I implemented is the very basic one.
 
 Leave a star if you liked what i did!
