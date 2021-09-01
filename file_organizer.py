@@ -34,6 +34,7 @@ def Organizer(path, userSelection):
                 except OSError as error:
                     print('''Something unexpected happened! 
                         Error message:''', error)
+        print("\n\tYour files are sorted Successfully!")
 
 
 if __name__ == "__main__":
@@ -78,25 +79,15 @@ if __name__ == "__main__":
         userMenu = input('''
             In what way do you want to organize.
             
-            1). Organize all files with same extension in the same folder.
-            2). Organize files with specific extension in the same folder.
-            3). Organize files of certain extensions in the same folder.
+            1). Organize all files in the directory.
+            2). Organize files of certain extensions in the directory.
+
             >>> ''')
 
         if userMenu == '1':
             userSelection = extenstionSet
 
         elif userMenu == '2':
-            ext = input(
-                '''\n\tEnter the extension you want to organize preceeded by a period. For-example:- '.py' 
-                >>> ''')
-
-            folderName = input('''\n\tEnter a folder name of your choice for the selected extension 
-            >>> ''')
-
-            userSelection[ext] = folderName
-
-        elif userMenu == '3':
             ext = input('''\n\tEnter the extensions you want to organize preceeded by a period and separated by space.
             For-example:- '.py .json .csv' 
             >>> ''')
