@@ -1,11 +1,10 @@
 # Automated file organizer
 
 If you have that messed up folder structure with tons of different files all jumbled together, this is just the right script you need.
-It will sort the same file types into same folders. It has three options:-
+It will sort the same file types into same folders. It has two options:-
 
-    1). Organize all files with same extension in the same folder.
-    2). Organize files with specific extension in the same folder.
-    3). Organize files of certain extensions in the same folder.
+    1). Organize all files in the directory.
+    2). Organize files of certain extensions in the directory.
 
 Usage:
 
