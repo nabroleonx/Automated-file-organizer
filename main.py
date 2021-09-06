@@ -16,22 +16,42 @@ category = {"Audios": [".aif", ".cda", ".mid.mp3", ".mpa", ".ogg", ".wav", ".wma
                           ".docx", ".aspx", ".html"],
             "Images": [".ai", ".bmp", ".gif", ".ico", ".jpeg", ".png", ".ps", ".psd", ".svg", ".tif", ".jpg", ".tiff"],
             "Videos": [".3g2", ".3gp", ".avi", ".flv", ".h264", ".m4v", ".mkv", ".mov", ".mp4", ".mpg.rm", ".swf",
-                      ".vob", ".wmv", ".mpeg", ".webm"],
+                       ".vob", ".wmv", ".mpeg", ".webm"],
             "Setups": [".apk", ".bat", ".bin", ".cgi", ".com", ".exe", ".gadget", ".jar", ".msi", ".py", ".wsf"],
             "Systemfiles": [".bak", ".cab", ".cfg", ".cpl", ".cur", ".dll", ".dmp", ".drv", ".icns", ".ico", ".ini",
                             ".lnk", ".msi",
                             ".sys", ".tmp"]}
 
 
+def movers(source, destination):
+    if not os.path.exists(destination):
+        os.makedirs(destination)
+    try:
+        shutil.move(source, destination)
+    except OSError as error:
+        print(str(source) + " <= File is open. Error => ", error)
+
+
+def our_cat_dir(main_path, filepath):
+    for cat in category:
+        if filepath == os.path.join(main_path, cat):
+            return True
+    return False
+
+
+def our_ext_dir(main_path, filepath):
+    for cat in category:
+        for ext in category[cat]:
+            if filepath == os.path.join(main_path, ext):
+                return True
+    return False
+
+
 def org_by_cat(path):
     for file in os.listdir(path):
         file_path = os.path.join(path, file)
         if os.path.isdir(file_path):
-            check = True
-            for cat in category:
-                if file_path == os.path.join(path, cat):
-                    check = False
-            if check:
+            if not our_cat_dir(path, file_path):
                 Thread(target=org_by_cat, args=[file_path]).start()
                 continue
         else:
@@ -39,37 +59,22 @@ def org_by_cat(path):
             for cat in category:
                 cat_folder = os.path.join(path, cat)
                 if file_extension in category[cat]:
-                    if not os.path.exists(cat_folder):
-                        os.makedirs(cat_folder)
-                    try:
-                        shutil.move(file_path, cat_folder)
-                    except OSError as error:
-                        print(str(file_path) + " <= File is open. Error => ", error)
+                    movers(file_path, cat_folder)
 
 
 def org_by_ext(path):
     for file in os.listdir(path):
         if os.path.isdir(file):
-            check = True
-            for cat in category:
-                for ext in category[cat]:
-                    if file == os.path.join(path, ext):
-                        check = False
-            if check:
+            if not our_ext_dir(path, file):
                 Thread(target=org_by_ext, args=[file]).start()
-            continue
+                continue
         else:
             file_path = os.path.join(path, file)
             file_name, file_extension = os.path.splitext(file_path)
             for cat in category:
                 if file_extension in category[cat]:
                     ext_folder = os.path.join(path, file_extension)
-                    if not os.path.exists(ext_folder):
-                        os.makedirs(ext_folder)
-                    try:
-                        shutil.move(file_path, ext_folder)
-                    except OSError as error:
-                        print(str(file_path) + " <= File is open. Error => ", error)
+                    movers(file_path, ext_folder)
 
 
 def main():
@@ -100,7 +105,9 @@ def main():
         organise_type = input("\nIn what way do you want to organize.\n\t"
                               + "1) Organize files by category.\n\t"
                               + "2) Organize files by extension.\n>>>")
-        if organise_type == "1":
+        if organise_type == "q":
+            break
+        elif organise_type == "1":
             print("Working")
             org_by_cat(organise_folder)
             print("Done")
@@ -109,8 +116,6 @@ def main():
             print("Working")
             org_by_ext(organise_folder)
             print("Done")
-            break
-        else:
             break
 
 
