@@ -1,6 +1,6 @@
 # Automated file organizer
 
-If you have that messed up folder structure with tons of different files all jumbled together, this is just the right script you need.
+If you have that messed up folder structure with tons of different files all jumbled together, this is just the right script you need. It works for both linux and Windos OS
 It will sort the same file types into same folders. It has two options:-
 
     1). Organize all files in the directory.
