@@ -1,7 +1,7 @@
 import os
 import shutil
 from sys import platform
-from threading import Thread
+import threading
 
 organise_folder = download_path = None
 
@@ -32,48 +32,34 @@ def movers(source, destination):
         print(str(source) + " <= File is open. Error => ", error)
 
 
-def our_cat_dir(main_path, filepath):
-    for cat in category:
-        if filepath == os.path.join(main_path, cat):
-            return True
-    return False
+def org_by_cat(path, file):
+    file_path = os.path.join(path, file)
+    if os.path.isdir(file_path):
+        pass
+    else:
+        file_name, file_extension = os.path.splitext(file_path)
+        for cat in category:
+            cat_folder = os.path.join(path, cat)
+            if file_extension in category[cat]:
+                movers(file_path, cat_folder)
 
 
-def our_ext_dir(main_path, filepath):
-    for cat in category:
-        for ext in category[cat]:
-            if filepath == os.path.join(main_path, ext):
-                return True
-    return False
-
-
-def org_by_cat(path):
-    for file in os.listdir(path):
+def org_by_ext(path, chosen_ext, destination, file):
+    if os.path.isdir(file):
+        pass
+    else:
         file_path = os.path.join(path, file)
-        if os.path.isdir(file_path):
-            if not our_cat_dir(path, file_path):
-                Thread(target=org_by_cat, args=[file_path]).start()
-                continue
-        else:
-            file_name, file_extension = os.path.splitext(file_path)
-            for cat in category:
-                cat_folder = os.path.join(path, cat)
-                if file_extension in category[cat]:
-                    movers(file_path, cat_folder)
-
-
-def org_by_ext(path):
-    for file in os.listdir(path):
-        if os.path.isdir(file):
-            if not our_ext_dir(path, file):
-                Thread(target=org_by_ext, args=[file]).start()
-                continue
-        else:
-            file_path = os.path.join(path, file)
-            file_name, file_extension = os.path.splitext(file_path)
+        file_name, file_extension = os.path.splitext(file_path)
+        if destination == '':
+            destination = os.path.join(path, file_extension+" files")
+        if chosen_ext != []:
+            if file_extension in chosen_ext:
+                ext_folder = os.path.join(path, destination)
+                movers(file_path, ext_folder)
+        if chosen_ext == []:
+            ext_folder = os.path.join(path, destination)
             for cat in category:
                 if file_extension in category[cat]:
-                    ext_folder = os.path.join(path, file_extension)
                     movers(file_path, ext_folder)
 
 
@@ -82,10 +68,11 @@ def main():
     if platform == "linux" or platform == "linux2":
         download_path = "/home/" + os.environ.get('USERNAME') + "/Downloads"
     elif platform == "win32":
-        download_path = "C:\\Users\\" + os.environ.get('USERNAME') + "\\Downloads"
+        download_path = "C:\\Users\\" + \
+            os.environ.get('USERNAME') + "\\Downloads"
     while True:
         print("Press Q to exit anytime.")
-        path = input('''\tOrganise Custom Directory? Enter Path (default : Downloads)\n>>>''')
+        path = input('''\tOrganise Custom Directory? Enter Path (default : Downloads)\n>>> ''')
         if path == "q":
             break
         elif path == "":
@@ -104,17 +91,24 @@ def main():
     while True:
         organise_type = input("\nIn what way do you want to organize.\n\t"
                               + "1) Organize files by category.\n\t"
-                              + "2) Organize files by extension.\n>>>")
+                              + "2) Organize files by extension.\n>>> ")
         if organise_type == "q":
             break
+
         elif organise_type == "1":
-            print("Working")
-            org_by_cat(organise_folder)
+            for file in os.listdir(organise_folder):
+                threading.Thread(target=org_by_cat, args=[organise_folder, file]).start()
             print("Done")
             break
+
         elif organise_type == "2":
-            print("Working")
-            org_by_ext(organise_folder)
+            chosen_ext = input('''\n\tEnter the extensions you want to organize preceeded by a period and separated by space.\n
+            For-example:- '.py .json .csv' --- or --- hit enter to sort all files with the same extension\n>>> ''').split()
+
+            destination = input('''\n\tWhat do you want to name the folder\n>>> ''')
+
+            for file in os.listdir(organise_folder):
+                threading.Thread(target=org_by_ext, args=[organise_folder, chosen_ext, destination, file]).start()
             print("Done")
             break
 
